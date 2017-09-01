@@ -22,6 +22,7 @@ namespace HumaneSocietyConsole
             switch (userResponse)
             {
                 case "1":
+                    ListAnimalCategories();
                     break;
                 case "2":
                     //AddAnimalToDatabase();
@@ -35,6 +36,16 @@ namespace HumaneSocietyConsole
                     RunEmployeeFunctions();
                     break;
             }
+        }
+        public void ListAnimalCategories()
+        {
+            var animals = from a in humaneSocietyData.Animals
+                          select a;
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine($"{animal.Name} is a {animal.AnimalType.TypeName}");
+            }
+            Console.Read();
         }
         public void ListAnimalRoomNumnbers()
         {

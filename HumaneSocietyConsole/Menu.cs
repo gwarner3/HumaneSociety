@@ -33,7 +33,7 @@ namespace HumaneSocietyConsole
         }
         public string DisplayEmployeeMenu()
         {
-            Console.WriteLine("1. Import animal data\n2. Add animal to database\n3. List animal room numbers\n4. Set animal adoption status\n5. Get payment\n6. List animal shot status\n7. List animal weekly food serving needs");
+            Console.WriteLine("1. Display animals by category\n2. Add animal to database\n3. List animal room numbers\n4. Set animal adoption status\n5. Get payment\n6. List animal shot status\n7. List animal weekly food serving needs");
             userResponse = Console.ReadLine();
             return userResponse;            
         }
