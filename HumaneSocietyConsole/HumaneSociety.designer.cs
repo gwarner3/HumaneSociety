@@ -33,9 +33,6 @@ namespace HumaneSocietyConsole
     partial void InsertAdopter(Adopter instance);
     partial void UpdateAdopter(Adopter instance);
     partial void DeleteAdopter(Adopter instance);
-    partial void InsertAnimal(Animal instance);
-    partial void UpdateAnimal(Animal instance);
-    partial void DeleteAnimal(Animal instance);
     partial void InsertAnimalType(AnimalType instance);
     partial void UpdateAnimalType(AnimalType instance);
     partial void DeleteAnimalType(AnimalType instance);
@@ -51,6 +48,9 @@ namespace HumaneSocietyConsole
     partial void InsertRoom(Room instance);
     partial void UpdateRoom(Room instance);
     partial void DeleteRoom(Room instance);
+    partial void InsertAnimal(Animal instance);
+    partial void UpdateAnimal(Animal instance);
+    partial void DeleteAnimal(Animal instance);
     #endregion
 		
 		public HumaneSocietyDataContext() : 
@@ -88,14 +88,6 @@ namespace HumaneSocietyConsole
 			get
 			{
 				return this.GetTable<Adopter>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Animal> Animals
-		{
-			get
-			{
-				return this.GetTable<Animal>();
 			}
 		}
 		
@@ -138,6 +130,14 @@ namespace HumaneSocietyConsole
 				return this.GetTable<Room>();
 			}
 		}
+		
+		public System.Data.Linq.Table<Animal> Animals
+		{
+			get
+			{
+				return this.GetTable<Animal>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Adopter")]
@@ -160,9 +160,9 @@ namespace HumaneSocietyConsole
 		
 		private System.Nullable<int> _Gender_ID;
 		
-		private EntitySet<Animal> _Animals;
-		
 		private EntitySet<Payment> _Payments;
+		
+		private EntitySet<Animal> _Animals;
 		
 		private EntityRef<Gender> _Gender;
 		
@@ -188,8 +188,8 @@ namespace HumaneSocietyConsole
 		
 		public Adopter()
 		{
-			this._Animals = new EntitySet<Animal>(new Action<Animal>(this.attach_Animals), new Action<Animal>(this.detach_Animals));
 			this._Payments = new EntitySet<Payment>(new Action<Payment>(this.attach_Payments), new Action<Payment>(this.detach_Payments));
+			this._Animals = new EntitySet<Animal>(new Action<Animal>(this.attach_Animals), new Action<Animal>(this.detach_Animals));
 			this._Gender = default(EntityRef<Gender>);
 			OnCreated();
 		}
@@ -338,19 +338,6 @@ namespace HumaneSocietyConsole
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Adopter_Animal", Storage="_Animals", ThisKey="Adopter_ID", OtherKey="Adopter_ID")]
-		public EntitySet<Animal> Animals
-		{
-			get
-			{
-				return this._Animals;
-			}
-			set
-			{
-				this._Animals.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Adopter_Payment", Storage="_Payments", ThisKey="Adopter_ID", OtherKey="Adopter_ID")]
 		public EntitySet<Payment> Payments
 		{
@@ -361,6 +348,19 @@ namespace HumaneSocietyConsole
 			set
 			{
 				this._Payments.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Adopter_Animal", Storage="_Animals", ThisKey="Adopter_ID", OtherKey="Adopter_ID")]
+		public EntitySet<Animal> Animals
+		{
+			get
+			{
+				return this._Animals;
+			}
+			set
+			{
+				this._Animals.Assign(value);
 			}
 		}
 		
@@ -418,6 +418,18 @@ namespace HumaneSocietyConsole
 			}
 		}
 		
+		private void attach_Payments(Payment entity)
+		{
+			this.SendPropertyChanging();
+			entity.Adopter = this;
+		}
+		
+		private void detach_Payments(Payment entity)
+		{
+			this.SendPropertyChanging();
+			entity.Adopter = null;
+		}
+		
 		private void attach_Animals(Animal entity)
 		{
 			this.SendPropertyChanging();
@@ -428,529 +440,6 @@ namespace HumaneSocietyConsole
 		{
 			this.SendPropertyChanging();
 			entity.Adopter = null;
-		}
-		
-		private void attach_Payments(Payment entity)
-		{
-			this.SendPropertyChanging();
-			entity.Adopter = this;
-		}
-		
-		private void detach_Payments(Payment entity)
-		{
-			this.SendPropertyChanging();
-			entity.Adopter = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Animal")]
-	public partial class Animal : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Animal_ID;
-		
-		private string _Name;
-		
-		private System.DateTime _DOB;
-		
-		private decimal _Price;
-		
-		private string _HasShoots;
-		
-		private System.Nullable<int> _Adopter_ID;
-		
-		private System.Nullable<int> _AnimalType_ID;
-		
-		private System.Nullable<int> _Food_ID;
-		
-		private System.Nullable<int> _Room_ID;
-		
-		private System.Nullable<int> _Gender_ID;
-		
-		private EntitySet<Payment> _Payments;
-		
-		private EntityRef<Adopter> _Adopter;
-		
-		private EntityRef<AnimalType> _AnimalType;
-		
-		private EntityRef<Food> _Food;
-		
-		private EntityRef<Gender> _Gender;
-		
-		private EntityRef<Room> _Room;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnAnimal_IDChanging(int value);
-    partial void OnAnimal_IDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnDOBChanging(System.DateTime value);
-    partial void OnDOBChanged();
-    partial void OnPriceChanging(decimal value);
-    partial void OnPriceChanged();
-    partial void OnHasShootsChanging(string value);
-    partial void OnHasShootsChanged();
-    partial void OnAdopter_IDChanging(System.Nullable<int> value);
-    partial void OnAdopter_IDChanged();
-    partial void OnAnimalType_IDChanging(System.Nullable<int> value);
-    partial void OnAnimalType_IDChanged();
-    partial void OnFood_IDChanging(System.Nullable<int> value);
-    partial void OnFood_IDChanged();
-    partial void OnRoom_IDChanging(System.Nullable<int> value);
-    partial void OnRoom_IDChanged();
-    partial void OnGender_IDChanging(System.Nullable<int> value);
-    partial void OnGender_IDChanged();
-    #endregion
-		
-		public Animal()
-		{
-			this._Payments = new EntitySet<Payment>(new Action<Payment>(this.attach_Payments), new Action<Payment>(this.detach_Payments));
-			this._Adopter = default(EntityRef<Adopter>);
-			this._AnimalType = default(EntityRef<AnimalType>);
-			this._Food = default(EntityRef<Food>);
-			this._Gender = default(EntityRef<Gender>);
-			this._Room = default(EntityRef<Room>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Animal_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Animal_ID
-		{
-			get
-			{
-				return this._Animal_ID;
-			}
-			set
-			{
-				if ((this._Animal_ID != value))
-				{
-					this.OnAnimal_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Animal_ID = value;
-					this.SendPropertyChanged("Animal_ID");
-					this.OnAnimal_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DOB", DbType="Date NOT NULL")]
-		public System.DateTime DOB
-		{
-			get
-			{
-				return this._DOB;
-			}
-			set
-			{
-				if ((this._DOB != value))
-				{
-					this.OnDOBChanging(value);
-					this.SendPropertyChanging();
-					this._DOB = value;
-					this.SendPropertyChanged("DOB");
-					this.OnDOBChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="SmallMoney NOT NULL")]
-		public decimal Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this.OnPriceChanging(value);
-					this.SendPropertyChanging();
-					this._Price = value;
-					this.SendPropertyChanged("Price");
-					this.OnPriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HasShoots", DbType="VarChar(25) NOT NULL", CanBeNull=false)]
-		public string HasShoots
-		{
-			get
-			{
-				return this._HasShoots;
-			}
-			set
-			{
-				if ((this._HasShoots != value))
-				{
-					this.OnHasShootsChanging(value);
-					this.SendPropertyChanging();
-					this._HasShoots = value;
-					this.SendPropertyChanged("HasShoots");
-					this.OnHasShootsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Adopter_ID", DbType="Int")]
-		public System.Nullable<int> Adopter_ID
-		{
-			get
-			{
-				return this._Adopter_ID;
-			}
-			set
-			{
-				if ((this._Adopter_ID != value))
-				{
-					if (this._Adopter.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnAdopter_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Adopter_ID = value;
-					this.SendPropertyChanged("Adopter_ID");
-					this.OnAdopter_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnimalType_ID", DbType="Int")]
-		public System.Nullable<int> AnimalType_ID
-		{
-			get
-			{
-				return this._AnimalType_ID;
-			}
-			set
-			{
-				if ((this._AnimalType_ID != value))
-				{
-					if (this._AnimalType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnAnimalType_IDChanging(value);
-					this.SendPropertyChanging();
-					this._AnimalType_ID = value;
-					this.SendPropertyChanged("AnimalType_ID");
-					this.OnAnimalType_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Food_ID", DbType="Int")]
-		public System.Nullable<int> Food_ID
-		{
-			get
-			{
-				return this._Food_ID;
-			}
-			set
-			{
-				if ((this._Food_ID != value))
-				{
-					if (this._Food.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnFood_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Food_ID = value;
-					this.SendPropertyChanged("Food_ID");
-					this.OnFood_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_ID", DbType="Int")]
-		public System.Nullable<int> Room_ID
-		{
-			get
-			{
-				return this._Room_ID;
-			}
-			set
-			{
-				if ((this._Room_ID != value))
-				{
-					if (this._Room.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRoom_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Room_ID = value;
-					this.SendPropertyChanged("Room_ID");
-					this.OnRoom_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender_ID", DbType="Int")]
-		public System.Nullable<int> Gender_ID
-		{
-			get
-			{
-				return this._Gender_ID;
-			}
-			set
-			{
-				if ((this._Gender_ID != value))
-				{
-					if (this._Gender.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnGender_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Gender_ID = value;
-					this.SendPropertyChanged("Gender_ID");
-					this.OnGender_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Animal_Payment", Storage="_Payments", ThisKey="Animal_ID", OtherKey="Animal_ID")]
-		public EntitySet<Payment> Payments
-		{
-			get
-			{
-				return this._Payments;
-			}
-			set
-			{
-				this._Payments.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Adopter_Animal", Storage="_Adopter", ThisKey="Adopter_ID", OtherKey="Adopter_ID", IsForeignKey=true)]
-		public Adopter Adopter
-		{
-			get
-			{
-				return this._Adopter.Entity;
-			}
-			set
-			{
-				Adopter previousValue = this._Adopter.Entity;
-				if (((previousValue != value) 
-							|| (this._Adopter.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Adopter.Entity = null;
-						previousValue.Animals.Remove(this);
-					}
-					this._Adopter.Entity = value;
-					if ((value != null))
-					{
-						value.Animals.Add(this);
-						this._Adopter_ID = value.Adopter_ID;
-					}
-					else
-					{
-						this._Adopter_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Adopter");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AnimalType_Animal", Storage="_AnimalType", ThisKey="AnimalType_ID", OtherKey="AnimalType_ID", IsForeignKey=true)]
-		public AnimalType AnimalType
-		{
-			get
-			{
-				return this._AnimalType.Entity;
-			}
-			set
-			{
-				AnimalType previousValue = this._AnimalType.Entity;
-				if (((previousValue != value) 
-							|| (this._AnimalType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._AnimalType.Entity = null;
-						previousValue.Animals.Remove(this);
-					}
-					this._AnimalType.Entity = value;
-					if ((value != null))
-					{
-						value.Animals.Add(this);
-						this._AnimalType_ID = value.AnimalType_ID;
-					}
-					else
-					{
-						this._AnimalType_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("AnimalType");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Food_Animal", Storage="_Food", ThisKey="Food_ID", OtherKey="Food_ID", IsForeignKey=true)]
-		public Food Food
-		{
-			get
-			{
-				return this._Food.Entity;
-			}
-			set
-			{
-				Food previousValue = this._Food.Entity;
-				if (((previousValue != value) 
-							|| (this._Food.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Food.Entity = null;
-						previousValue.Animals.Remove(this);
-					}
-					this._Food.Entity = value;
-					if ((value != null))
-					{
-						value.Animals.Add(this);
-						this._Food_ID = value.Food_ID;
-					}
-					else
-					{
-						this._Food_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Food");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Gender_Animal", Storage="_Gender", ThisKey="Gender_ID", OtherKey="Gender_ID", IsForeignKey=true)]
-		public Gender Gender
-		{
-			get
-			{
-				return this._Gender.Entity;
-			}
-			set
-			{
-				Gender previousValue = this._Gender.Entity;
-				if (((previousValue != value) 
-							|| (this._Gender.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Gender.Entity = null;
-						previousValue.Animals.Remove(this);
-					}
-					this._Gender.Entity = value;
-					if ((value != null))
-					{
-						value.Animals.Add(this);
-						this._Gender_ID = value.Gender_ID;
-					}
-					else
-					{
-						this._Gender_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Gender");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Animal", Storage="_Room", ThisKey="Room_ID", OtherKey="Room_ID", IsForeignKey=true)]
-		public Room Room
-		{
-			get
-			{
-				return this._Room.Entity;
-			}
-			set
-			{
-				Room previousValue = this._Room.Entity;
-				if (((previousValue != value) 
-							|| (this._Room.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Room.Entity = null;
-						previousValue.Animals.Remove(this);
-					}
-					this._Room.Entity = value;
-					if ((value != null))
-					{
-						value.Animals.Add(this);
-						this._Room_ID = value.Room_ID;
-					}
-					else
-					{
-						this._Room_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Room");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Payments(Payment entity)
-		{
-			this.SendPropertyChanging();
-			entity.Animal = this;
-		}
-		
-		private void detach_Payments(Payment entity)
-		{
-			this.SendPropertyChanging();
-			entity.Animal = null;
 		}
 	}
 	
@@ -1364,9 +853,9 @@ namespace HumaneSocietyConsole
 		
 		private System.Nullable<int> _Animal_ID;
 		
-		private EntityRef<Animal> _Animal;
-		
 		private EntityRef<Adopter> _Adopter;
+		
+		private EntityRef<Animal> _Animal;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1386,8 +875,8 @@ namespace HumaneSocietyConsole
 		
 		public Payment()
 		{
-			this._Animal = default(EntityRef<Animal>);
 			this._Adopter = default(EntityRef<Adopter>);
+			this._Animal = default(EntityRef<Animal>);
 			OnCreated();
 		}
 		
@@ -1499,40 +988,6 @@ namespace HumaneSocietyConsole
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Animal_Payment", Storage="_Animal", ThisKey="Animal_ID", OtherKey="Animal_ID", IsForeignKey=true)]
-		public Animal Animal
-		{
-			get
-			{
-				return this._Animal.Entity;
-			}
-			set
-			{
-				Animal previousValue = this._Animal.Entity;
-				if (((previousValue != value) 
-							|| (this._Animal.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Animal.Entity = null;
-						previousValue.Payments.Remove(this);
-					}
-					this._Animal.Entity = value;
-					if ((value != null))
-					{
-						value.Payments.Add(this);
-						this._Animal_ID = value.Animal_ID;
-					}
-					else
-					{
-						this._Animal_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Animal");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Adopter_Payment", Storage="_Adopter", ThisKey="Adopter_ID", OtherKey="Adopter_ID", IsForeignKey=true)]
 		public Adopter Adopter
 		{
@@ -1563,6 +1018,40 @@ namespace HumaneSocietyConsole
 						this._Adopter_ID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Adopter");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Animal_Payment", Storage="_Animal", ThisKey="Animal_ID", OtherKey="Animal_ID", IsForeignKey=true)]
+		public Animal Animal
+		{
+			get
+			{
+				return this._Animal.Entity;
+			}
+			set
+			{
+				Animal previousValue = this._Animal.Entity;
+				if (((previousValue != value) 
+							|| (this._Animal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Animal.Entity = null;
+						previousValue.Payments.Remove(this);
+					}
+					this._Animal.Entity = value;
+					if ((value != null))
+					{
+						value.Payments.Add(this);
+						this._Animal_ID = value.Animal_ID;
+					}
+					else
+					{
+						this._Animal_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Animal");
 				}
 			}
 		}
@@ -1699,6 +1188,541 @@ namespace HumaneSocietyConsole
 		{
 			this.SendPropertyChanging();
 			entity.Room = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Animal")]
+	public partial class Animal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Animal_ID;
+		
+		private string _Name;
+		
+		private System.DateTime _DOB;
+		
+		private decimal _Price;
+		
+		private string _HasShoots;
+		
+		private System.Nullable<int> _Adopter_ID;
+		
+		private System.Nullable<int> _AnimalType_ID;
+		
+		private System.Nullable<int> _Food_ID;
+		
+		private System.Nullable<int> _Room_ID;
+		
+		private System.Nullable<int> _Gender_ID;
+		
+		private string _AdoptionStatus;
+		
+		private EntitySet<Payment> _Payments;
+		
+		private EntityRef<Adopter> _Adopter;
+		
+		private EntityRef<AnimalType> _AnimalType;
+		
+		private EntityRef<Food> _Food;
+		
+		private EntityRef<Gender> _Gender;
+		
+		private EntityRef<Room> _Room;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAnimal_IDChanging(int value);
+    partial void OnAnimal_IDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDOBChanging(System.DateTime value);
+    partial void OnDOBChanged();
+    partial void OnPriceChanging(decimal value);
+    partial void OnPriceChanged();
+    partial void OnHasShootsChanging(string value);
+    partial void OnHasShootsChanged();
+    partial void OnAdopter_IDChanging(System.Nullable<int> value);
+    partial void OnAdopter_IDChanged();
+    partial void OnAnimalType_IDChanging(System.Nullable<int> value);
+    partial void OnAnimalType_IDChanged();
+    partial void OnFood_IDChanging(System.Nullable<int> value);
+    partial void OnFood_IDChanged();
+    partial void OnRoom_IDChanging(System.Nullable<int> value);
+    partial void OnRoom_IDChanged();
+    partial void OnGender_IDChanging(System.Nullable<int> value);
+    partial void OnGender_IDChanged();
+    partial void OnAdoptionStatusChanging(string value);
+    partial void OnAdoptionStatusChanged();
+    #endregion
+		
+		public Animal()
+		{
+			this._Payments = new EntitySet<Payment>(new Action<Payment>(this.attach_Payments), new Action<Payment>(this.detach_Payments));
+			this._Adopter = default(EntityRef<Adopter>);
+			this._AnimalType = default(EntityRef<AnimalType>);
+			this._Food = default(EntityRef<Food>);
+			this._Gender = default(EntityRef<Gender>);
+			this._Room = default(EntityRef<Room>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Animal_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Animal_ID
+		{
+			get
+			{
+				return this._Animal_ID;
+			}
+			set
+			{
+				if ((this._Animal_ID != value))
+				{
+					this.OnAnimal_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Animal_ID = value;
+					this.SendPropertyChanged("Animal_ID");
+					this.OnAnimal_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DOB", DbType="Date NOT NULL")]
+		public System.DateTime DOB
+		{
+			get
+			{
+				return this._DOB;
+			}
+			set
+			{
+				if ((this._DOB != value))
+				{
+					this.OnDOBChanging(value);
+					this.SendPropertyChanging();
+					this._DOB = value;
+					this.SendPropertyChanged("DOB");
+					this.OnDOBChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="SmallMoney NOT NULL")]
+		public decimal Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HasShoots", DbType="VarChar(25) NOT NULL", CanBeNull=false)]
+		public string HasShoots
+		{
+			get
+			{
+				return this._HasShoots;
+			}
+			set
+			{
+				if ((this._HasShoots != value))
+				{
+					this.OnHasShootsChanging(value);
+					this.SendPropertyChanging();
+					this._HasShoots = value;
+					this.SendPropertyChanged("HasShoots");
+					this.OnHasShootsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Adopter_ID", DbType="Int")]
+		public System.Nullable<int> Adopter_ID
+		{
+			get
+			{
+				return this._Adopter_ID;
+			}
+			set
+			{
+				if ((this._Adopter_ID != value))
+				{
+					if (this._Adopter.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAdopter_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Adopter_ID = value;
+					this.SendPropertyChanged("Adopter_ID");
+					this.OnAdopter_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnimalType_ID", DbType="Int")]
+		public System.Nullable<int> AnimalType_ID
+		{
+			get
+			{
+				return this._AnimalType_ID;
+			}
+			set
+			{
+				if ((this._AnimalType_ID != value))
+				{
+					if (this._AnimalType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAnimalType_IDChanging(value);
+					this.SendPropertyChanging();
+					this._AnimalType_ID = value;
+					this.SendPropertyChanged("AnimalType_ID");
+					this.OnAnimalType_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Food_ID", DbType="Int")]
+		public System.Nullable<int> Food_ID
+		{
+			get
+			{
+				return this._Food_ID;
+			}
+			set
+			{
+				if ((this._Food_ID != value))
+				{
+					if (this._Food.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFood_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Food_ID = value;
+					this.SendPropertyChanged("Food_ID");
+					this.OnFood_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_ID", DbType="Int")]
+		public System.Nullable<int> Room_ID
+		{
+			get
+			{
+				return this._Room_ID;
+			}
+			set
+			{
+				if ((this._Room_ID != value))
+				{
+					if (this._Room.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRoom_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Room_ID = value;
+					this.SendPropertyChanged("Room_ID");
+					this.OnRoom_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender_ID", DbType="Int")]
+		public System.Nullable<int> Gender_ID
+		{
+			get
+			{
+				return this._Gender_ID;
+			}
+			set
+			{
+				if ((this._Gender_ID != value))
+				{
+					if (this._Gender.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGender_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Gender_ID = value;
+					this.SendPropertyChanged("Gender_ID");
+					this.OnGender_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdoptionStatus", DbType="VarChar(25)")]
+		public string AdoptionStatus
+		{
+			get
+			{
+				return this._AdoptionStatus;
+			}
+			set
+			{
+				if ((this._AdoptionStatus != value))
+				{
+					this.OnAdoptionStatusChanging(value);
+					this.SendPropertyChanging();
+					this._AdoptionStatus = value;
+					this.SendPropertyChanged("AdoptionStatus");
+					this.OnAdoptionStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Animal_Payment", Storage="_Payments", ThisKey="Animal_ID", OtherKey="Animal_ID")]
+		public EntitySet<Payment> Payments
+		{
+			get
+			{
+				return this._Payments;
+			}
+			set
+			{
+				this._Payments.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Adopter_Animal", Storage="_Adopter", ThisKey="Adopter_ID", OtherKey="Adopter_ID", IsForeignKey=true)]
+		public Adopter Adopter
+		{
+			get
+			{
+				return this._Adopter.Entity;
+			}
+			set
+			{
+				Adopter previousValue = this._Adopter.Entity;
+				if (((previousValue != value) 
+							|| (this._Adopter.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Adopter.Entity = null;
+						previousValue.Animals.Remove(this);
+					}
+					this._Adopter.Entity = value;
+					if ((value != null))
+					{
+						value.Animals.Add(this);
+						this._Adopter_ID = value.Adopter_ID;
+					}
+					else
+					{
+						this._Adopter_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Adopter");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AnimalType_Animal", Storage="_AnimalType", ThisKey="AnimalType_ID", OtherKey="AnimalType_ID", IsForeignKey=true)]
+		public AnimalType AnimalType
+		{
+			get
+			{
+				return this._AnimalType.Entity;
+			}
+			set
+			{
+				AnimalType previousValue = this._AnimalType.Entity;
+				if (((previousValue != value) 
+							|| (this._AnimalType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._AnimalType.Entity = null;
+						previousValue.Animals.Remove(this);
+					}
+					this._AnimalType.Entity = value;
+					if ((value != null))
+					{
+						value.Animals.Add(this);
+						this._AnimalType_ID = value.AnimalType_ID;
+					}
+					else
+					{
+						this._AnimalType_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("AnimalType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Food_Animal", Storage="_Food", ThisKey="Food_ID", OtherKey="Food_ID", IsForeignKey=true)]
+		public Food Food
+		{
+			get
+			{
+				return this._Food.Entity;
+			}
+			set
+			{
+				Food previousValue = this._Food.Entity;
+				if (((previousValue != value) 
+							|| (this._Food.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Food.Entity = null;
+						previousValue.Animals.Remove(this);
+					}
+					this._Food.Entity = value;
+					if ((value != null))
+					{
+						value.Animals.Add(this);
+						this._Food_ID = value.Food_ID;
+					}
+					else
+					{
+						this._Food_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Food");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Gender_Animal", Storage="_Gender", ThisKey="Gender_ID", OtherKey="Gender_ID", IsForeignKey=true)]
+		public Gender Gender
+		{
+			get
+			{
+				return this._Gender.Entity;
+			}
+			set
+			{
+				Gender previousValue = this._Gender.Entity;
+				if (((previousValue != value) 
+							|| (this._Gender.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Gender.Entity = null;
+						previousValue.Animals.Remove(this);
+					}
+					this._Gender.Entity = value;
+					if ((value != null))
+					{
+						value.Animals.Add(this);
+						this._Gender_ID = value.Gender_ID;
+					}
+					else
+					{
+						this._Gender_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Gender");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Animal", Storage="_Room", ThisKey="Room_ID", OtherKey="Room_ID", IsForeignKey=true)]
+		public Room Room
+		{
+			get
+			{
+				return this._Room.Entity;
+			}
+			set
+			{
+				Room previousValue = this._Room.Entity;
+				if (((previousValue != value) 
+							|| (this._Room.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Room.Entity = null;
+						previousValue.Animals.Remove(this);
+					}
+					this._Room.Entity = value;
+					if ((value != null))
+					{
+						value.Animals.Add(this);
+						this._Room_ID = value.Room_ID;
+					}
+					else
+					{
+						this._Room_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Room");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Payments(Payment entity)
+		{
+			this.SendPropertyChanging();
+			entity.Animal = this;
+		}
+		
+		private void detach_Payments(Payment entity)
+		{
+			this.SendPropertyChanging();
+			entity.Animal = null;
 		}
 	}
 }

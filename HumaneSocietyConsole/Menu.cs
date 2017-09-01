@@ -43,6 +43,16 @@ namespace HumaneSocietyConsole
             userResponse = Console.ReadLine();
             return userResponse;            
         }
+        public string GetAnimalStatusToUpdate(IQueryable<Animal> animals)
+        {
+            Console.WriteLine("Type an animals name and press ENTER to change that animals status.");
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine($"{animal.Name} is {}");
+            }
+            userResponse = Console.ReadLine();
+            return userResponse;
+        }
         public  void DisplayAdopterMenu()
         {
         }

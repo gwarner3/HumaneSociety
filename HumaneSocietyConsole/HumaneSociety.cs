@@ -30,6 +30,9 @@ namespace HumaneSocietyConsole
                 case "3":
                     ListAnimalRoomNumnbers();                    
                     break;
+                case "4":
+                    SetAdoptionStatus();
+                    break;
                 case "7":
                     CalculateFoodNeeds();
                         break;
@@ -39,6 +42,12 @@ namespace HumaneSocietyConsole
                     RunEmployeeFunctions();
                     break;
             }
+        }
+        public void SetAdoptionStatus()
+        {
+            var animals = from a in humaneSocietyData.Animals
+                          select a;
+            userResponse = menu.GetAnimalStatusToUpdate(animals);
         }
         public void CalculateFoodNeeds()
         {
