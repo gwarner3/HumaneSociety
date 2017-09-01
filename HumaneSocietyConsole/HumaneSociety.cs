@@ -47,17 +47,25 @@ namespace HumaneSocietyConsole
         {
             var animals = from a in humaneSocietyData.Animals
                           select a;
-            userResponse = menu.GetAnimalStatusToUpdate(animals);
+            userResponse = menu.GetAnimalStatusToUpdate(animals.OrderBy(animal => animal.AdoptionStatus));
+            var animalToUpdate = humaneSocietyData.Animals.Single(adoptStatus => adoptStatus.Animal_ID == Convert.ToInt32(userResponse));
+            if (animalToUpdate.AdoptionStatus == "adopted")
+            {
+                animalToUpdate.AdoptionStatus = "not adopted";
+            }
+            else if (animalToUpdate.AdoptionStatus == "not adopted")
+            {
+                animalToUpdate.AdoptionStatus = "adopted";
+            }
+            humaneSocietyData.SubmitChanges();
         }
         public void CalculateFoodNeeds()
         {
             userResponse = menu.GetUserFoodNeed();
             var animals = from a in humaneSocietyData.Animals
                           select a;
-            foreach (Animal animal in animals)
-            {
-                Console.WriteLine($"{animal.Name} needs {animal.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {animal.Food.Name} for {userResponse} weeks.");
-            }
+            var newAnimal = animals.ToList();
+            newAnimal.ForEach((a) => { Console.WriteLine($"{a.Name} needs {a.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {a.Food.Name} for {userResponse} weeks."); });
             Console.ReadLine();
         }
         public void ListAnimalCategories()
