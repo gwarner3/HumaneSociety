@@ -58,6 +58,8 @@ namespace HumaneSocietyConsole
                 animalToUpdate.AdoptionStatus = "adopted";
             }
             humaneSocietyData.SubmitChanges();
+            Console.WriteLine($"{animalToUpdate.Name} adoption status is now - {animalToUpdate.AdoptionStatus}");
+            Console.ReadLine();
         }
         public void CalculateFoodNeeds()
         {
