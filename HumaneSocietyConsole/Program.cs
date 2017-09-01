@@ -10,6 +10,8 @@ namespace HumaneSocietyConsole
     {
         static void Main(string[] args)
         {
+            HumaneSociety humaneSociety = new HumaneSociety();
+            humaneSociety.OpenHumaneSociety();
         }
     }
 }
