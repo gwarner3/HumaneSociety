@@ -91,6 +91,24 @@ namespace HumaneSocietyConsole
         }
         public void RunAdopterFunctions()
         {
+            userResponse = menu.DisplayAdopterMenu();
+            switch (userResponse)
+            {
+                case "1":
+                    CreateAdopterProfile();
+                    break;
+                case "2":
+                    //AddAnimalToDatabase();
+                    break;
+                default:
+                    Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
+                    Console.ReadLine();
+                    RunAdopterFunctions();
+                    break;
+            }
+        }
+        public void CreateAdopterProfile()
+        {
 
         }
         public void AddAnimalToDatabase()
@@ -104,11 +122,11 @@ namespace HumaneSocietyConsole
 
             if (userResponse == "1")
             {
-                RunEmployeeFunctions();                
+                RunAdopterFunctions();
             }
             else
             {
-                RunAdopterFunctions();
+                RunEmployeeFunctions();
             }
 
         }

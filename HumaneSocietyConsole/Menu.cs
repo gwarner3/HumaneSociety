@@ -13,22 +13,8 @@ namespace HumaneSocietyConsole
         public string EmplyeeOrAdopter()
         {
             Console.Clear();
-            Console.WriteLine("Enter as:\n1. Employee\n2. Adopter");
+            Console.WriteLine("Enter as:\n1. Adopter\n2. Employee");
             userResponse = Console.ReadLine();
-            switch (userResponse)
-            { 
-                case "1":
-                    DisplayAdopterMenu();
-                    break;
-                case "2":
-                    DisplayEmployeeMenu();
-                    break;
-                default:
-                    Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
-                    Console.ReadLine();
-                    EmplyeeOrAdopter();
-                    break;
-            }
             return userResponse;
         }
         public string GetUserFoodNeed()
@@ -53,8 +39,11 @@ namespace HumaneSocietyConsole
             userResponse = Console.ReadLine();
             return userResponse;
         }
-        public  void DisplayAdopterMenu()
+        public string DisplayAdopterMenu()
         {
+            Console.WriteLine("1. Create a profile\n2. Search for animals");
+            userResponse = Console.ReadLine();
+            return userResponse;
         }
     }
 }
