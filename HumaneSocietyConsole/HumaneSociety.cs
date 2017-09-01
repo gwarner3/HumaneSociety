@@ -109,7 +109,19 @@ namespace HumaneSocietyConsole
         }
         public void CreateAdopterProfile()
         {
+            Adopter addedAdopter = new Adopter();
 
+            addedAdopter.FirstName = menu.PromptForFirstName();
+            addedAdopter.LastName = menu.PromptForLastName();
+            addedAdopter.DOB = menu.PromptForDOB();
+            addedAdopter.AnnualIncome = menu.PromptForAnnualIncome();
+            addedAdopter.Bio = menu.PromptForBio();
+            addedAdopter.Gender_ID = menu.PromptForGender();
+
+            humaneSocietyData.Adopters.InsertOnSubmit(addedAdopter);
+            humaneSocietyData.SubmitChanges();
+
+            Console.ReadLine();
         }
         public void AddAnimalToDatabase()
         {

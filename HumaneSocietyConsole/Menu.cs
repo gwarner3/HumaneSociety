@@ -39,6 +39,42 @@ namespace HumaneSocietyConsole
             userResponse = Console.ReadLine();
             return userResponse;
         }
+        public string PromptForFirstName()
+        {
+            Console.WriteLine("Key in your first name and press ENTER");
+            userResponse = Console.ReadLine();
+            return userResponse;
+        }
+        public string PromptForLastName()
+        {
+            Console.WriteLine("Key in your last name and press ENTER");
+            string userResponse = Console.ReadLine();
+            return userResponse;
+        }  
+        public DateTime PromptForDOB()
+        {
+            Console.WriteLine("Key in DOB as YYYY/MM/DD");
+            userResponse = Console.ReadLine();
+            return Convert.ToDateTime(userResponse);
+        }
+        public int PromptForAnnualIncome()
+        {
+            Console.WriteLine("Key in your annual income and press ENTER");
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
+        public string PromptForBio()
+        {
+            Console.WriteLine("Type up a short biography and press ENTER");
+            string userResponse = Console.ReadLine();
+            return userResponse;
+        }     
+        public int PromptForGender()
+        {
+            Console.WriteLine("Key in the number for your gender and press ENTER\n1. Male\n2. Female\n3. Other");
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
         public string DisplayAdopterMenu()
         {
             Console.WriteLine("1. Create a profile\n2. Search for animals");
