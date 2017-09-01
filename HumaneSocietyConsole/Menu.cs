@@ -6,19 +6,39 @@ using System.Threading.Tasks;
 
 namespace HumaneSocietyConsole
 {
-    public static class Menu
+    public class Menu
     {
-        private static string userResponse;
+        private string userResponse;
 
-        public static void EmplyeeOrAdopter()
+        public string EmplyeeOrAdopter()
         {
-            Console.WriteLine("Enter as:\n1. User\n2. Adopter");
+            Console.Clear();
+            Console.WriteLine("Enter as:\n1. Employee\n2. Adopter");
             userResponse = Console.ReadLine();
-            ChooseMenu(userResponse);
+            switch (userResponse)
+            { 
+                case "1":
+                    DisplayAdopterMenu();
+                    break;
+                case "2":
+                    DisplayEmployeeMenu();
+                    break;
+                default:
+                    Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
+                    Console.ReadLine();
+                    EmplyeeOrAdopter();
+                    break;
+            }
+            return userResponse;
         }
-        public static void ChooseMenu(string userResponse)
+        public string DisplayEmployeeMenu()
         {
-
+            Console.WriteLine("1. Import animal data\n2. Add animal to database\n3. List animal room numbers\n4. Set animal adoption status\n5. Get payment\n6. List animal shot status\n7. List animal weekly food serving needs");
+            userResponse = Console.ReadLine();
+            return userResponse;            
+        }
+        public  void DisplayAdopterMenu()
+        {
         }
     }
 }

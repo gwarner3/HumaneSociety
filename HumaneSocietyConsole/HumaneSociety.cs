@@ -9,13 +9,63 @@ namespace HumaneSocietyConsole
     class HumaneSociety
     {
         private string userResponse;
-        public HumaneSociety()
+        private HumaneSocietyDataContext humaneSocietyData = new HumaneSocietyDataContext();
+
+        Menu menu;
+        public HumaneSociety(Menu menu)
         {
+            this.menu = menu;
+        }
+        public void RunEmployeeFunctions()
+        {
+            userResponse = menu.DisplayEmployeeMenu();
+            switch (userResponse)
+            {
+                case "1":
+                    break;
+                case "2":
+                    //AddAnimalToDatabase();
+                    break;
+                case "3":
+                    ListAnimalRoomNumnbers();                    
+                    break;
+                default:
+                    Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
+                    Console.ReadLine();
+                    RunEmployeeFunctions();
+                    break;
+            }
+        }
+        public void ListAnimalRoomNumnbers()
+        {
+            var animals = from a in humaneSocietyData.Animals
+                        select a;
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine($"{animal.Name} is in {animal.Room.Number}");
+            }
+        }
+        public void RunAdopterFunctions()
+        {
+
+        }
+        public void AddAnimalToDatabase()
+        {
+
         }
         
         public void OpenHumaneSociety()
         {
-           Menu.EmplyeeOrAdopter();
+            userResponse = menu.EmplyeeOrAdopter();
+
+            if (userResponse == "1")
+            {
+                RunEmployeeFunctions();                
+            }
+            else
+            {
+                RunAdopterFunctions();
+            }
 
         }
     }
