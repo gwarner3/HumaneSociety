@@ -30,12 +30,26 @@ namespace HumaneSocietyConsole
                 case "3":
                     ListAnimalRoomNumnbers();                    
                     break;
+                case "7":
+                    CalculateFoodNeeds();
+                        break;
                 default:
                     Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
                     Console.ReadLine();
                     RunEmployeeFunctions();
                     break;
             }
+        }
+        public void CalculateFoodNeeds()
+        {
+            userResponse = menu.GetUserFoodNeed();
+            var animals = from a in humaneSocietyData.Animals
+                          select a;
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine($"{animal.Name} needs {animal.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {animal.Food.Name} for {userResponse} weeks.");
+            }
+            Console.ReadLine();
         }
         public void ListAnimalCategories()
         {
