@@ -71,7 +71,7 @@ namespace HumaneSocietyConsole
         }
         public string EmplyeeOrAdopter()
         {
-            Console.WriteLine("Enter as:\n1. Adopter\n2. Employee");
+            Console.WriteLine("Enter as:\n1. Adopter\n2. Employee\n3. Developer Admin");
             userResponse = Console.ReadLine();
             return userResponse;
         }
@@ -86,6 +86,12 @@ namespace HumaneSocietyConsole
             Console.WriteLine("1. Display animals by category\n2. Add animal to database\n3. List animal room numbers\n4. Set animal adoption status\n5. Collect payment\n6. Update animal shot status\n7. Calculate food serving needs");
             userResponse = Console.ReadLine();
             return userResponse;            
+        }
+        public string DisplayDeveloperAdminMenu()
+        {
+            Console.WriteLine("1. Import Animals from csv");
+            userResponse = Console.ReadLine();
+            return userResponse;
         }
         public string GetAnimalStatusToUpdate(IQueryable<Animal> animals)
         {

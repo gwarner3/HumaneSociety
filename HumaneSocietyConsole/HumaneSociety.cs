@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace HumaneSocietyConsole
 {
@@ -15,6 +16,46 @@ namespace HumaneSocietyConsole
         public HumaneSociety(Menu menu)
         {
             this.menu = menu;
+        }
+        public void RunDeveloperAdminFunctions()
+        {
+            userResponse = menu.DisplayDeveloperAdminMenu();
+            switch (userResponse)
+            {
+                case "1":
+                    ImportFile();
+                    break;
+                default:
+                    Console.WriteLine("Please enter a valid response. Press ENTER to continue");
+                    Console.ReadLine();
+                    RunDeveloperAdminFunctions();
+                    break;
+            }
+
+        }
+        public void ImportFile()
+        {
+            
+            List<string> somelist = new List<string>();
+            var csvLines = File.ReadAllLines("C:/Users/warne/Documents/Devcodecamp/HumaneSociety/AnimalImportFileTest.csv").Select(x => x.Split(','));
+
+            foreach (string[] line in csvLines)
+            {
+                Animal animalToAdd = new Animal();
+                animalToAdd.Name = line[0];
+                animalToAdd.DOB = Convert.ToDateTime(line[1]);
+                animalToAdd.Price = Convert.ToDecimal(line[2]);
+                animalToAdd.HasShoots = line[3];
+                animalToAdd.Adopter_ID = null;
+                animalToAdd.AnimalType_ID = Convert.ToInt32(line[5]);
+                animalToAdd.Food_ID = Convert.ToInt32(line[6]);
+                animalToAdd.Room_ID = Convert.ToInt32(line[7]);
+                animalToAdd.Gender_ID = Convert.ToInt32(line[8]);
+                animalToAdd.AdoptionStatus = line[9];
+                humaneSocietyData.Animals.InsertOnSubmit(animalToAdd);
+                humaneSocietyData.SubmitChanges();
+            }            
+            Console.ReadLine();
         }
         public void RunEmployeeFunctions()
         {
@@ -51,7 +92,7 @@ namespace HumaneSocietyConsole
         }
         public void UpdateAnimalShotStatus()
         {
-            Animal animalSelected = new Animal();            
+            Animal animalSelected = new Animal();
             int animalSelectedID = menu.ShowShotStatus(humaneSocietyData.Animals);
             var findAnimal = from animals in humaneSocietyData.Animals
                         where animals.Animal_ID == animalSelectedID
@@ -203,6 +244,10 @@ namespace HumaneSocietyConsole
             else if (userResponse == "2")
             {
                 RunEmployeeFunctions();
+            }
+            else if (userResponse == "3")
+            {
+                RunDeveloperAdminFunctions();
             }
             else
             {
