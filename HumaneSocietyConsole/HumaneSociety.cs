@@ -25,7 +25,7 @@ namespace HumaneSocietyConsole
                     ListAnimalCategories();
                     break;
                 case "2":
-                    //AddAnimalToDatabase();
+                    AddAnimalToDatabase();
                     break;
                 case "3":
                     ListAnimalRoomNumnbers();                    
@@ -98,7 +98,6 @@ namespace HumaneSocietyConsole
                     CreateAdopterProfile();
                     break;
                 case "2":
-                    //AddAnimalToDatabase();
                     break;
                 default:
                     Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
@@ -125,7 +124,20 @@ namespace HumaneSocietyConsole
         }
         public void AddAnimalToDatabase()
         {
+            Animal addedAnimal = new Animal();
 
+            addedAnimal.Name = menu.PromptForAnimalName();
+            addedAnimal.DOB = menu.PromptForDOB();
+            addedAnimal.Price = menu.PromptForAnimalPrice();
+            addedAnimal.HasShoots = menu.SetAnimalShotStatus();
+            addedAnimal.AnimalType_ID = menu.SetAnimalType(humaneSocietyData.AnimalTypes);
+            addedAnimal.Food_ID = menu.SetAnimalFoodType(humaneSocietyData.Foods);
+            addedAnimal.Room_ID = menu.SetRoomNumber(humaneSocietyData.Rooms);
+            addedAnimal.Gender_ID = menu.PromptForGender();
+            addedAnimal.AdoptionStatus = menu.SetAnimalAdoptionStatus();
+
+            humaneSocietyData.Animals.InsertOnSubmit(addedAnimal);
+            humaneSocietyData.SubmitChanges();
         }
         
         public void OpenHumaneSociety()

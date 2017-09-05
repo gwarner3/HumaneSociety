@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,12 @@ namespace HumaneSocietyConsole
             userResponse = Console.ReadLine();
             return userResponse;
         }
+        public string PromptForAnimalName()
+        {
+            Console.WriteLine("Key in animals name and press ENTER");
+            userResponse = Console.ReadLine();
+            return userResponse;
+        }
         public string PromptForFirstName()
         {
             Console.WriteLine("Key in your first name and press ENTER");
@@ -50,7 +57,94 @@ namespace HumaneSocietyConsole
             Console.WriteLine("Key in your last name and press ENTER");
             string userResponse = Console.ReadLine();
             return userResponse;
-        }  
+        }
+        public decimal PromptForAnimalPrice()
+        {
+            Console.WriteLine("Key in animals price and press ENTER");
+            userResponse = Console.ReadLine();
+            return Convert.ToDecimal(userResponse);
+        }
+        public string SetAnimalAdoptionStatus()
+        {
+            Console.WriteLine("Key in number of adoption status and press ENTER.\n1. Adopted\n2. Not Adopted");
+            userResponse = Console.ReadLine();
+            switch (userResponse)
+            {
+                case "1":
+                    userResponse = "adopted";
+                    break;
+                case "2":
+                    userResponse = "not adopted";
+                    break;
+                default:
+                    Console.WriteLine("Please select one of the three options. Press ENTER to continue");
+                    Console.ReadLine();
+                    SetAnimalAdoptionStatus();
+                    break;
+            }
+            return userResponse;
+        }
+        public int SetAnimalType(Table<AnimalType> animalTypes)
+        {
+            Console.WriteLine("Key in the number of the animal type and press ENTER");
+            foreach (AnimalType type in animalTypes)
+            {
+                Console.WriteLine($"{type.AnimalType_ID}. {type.TypeName}");
+            }
+            userResponse = Console.ReadLine();
+            //validate user input
+            //int test = Convert.ToInt32(userResponse);
+            //if (animalTypes.Any(type => type.AnimalType_ID != test))
+            //{
+            //    Console.WriteLine("Please key in a valid ID form the list");
+            //    SetAnimalType(animalTypes);
+            //}
+            return Convert.ToInt32(userResponse);
+
+        }
+        public int SetAnimalFoodType(Table<Food> animalFoods)
+        {
+            Console.WriteLine("Key in the number of the food and press ENTER.");
+            foreach (Food food in animalFoods)
+            {
+                Console.WriteLine($"{food.Food_ID}. {food.Name}");
+            }
+            //input validation here
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
+        public int SetRoomNumber(Table<Room> rooms)
+        {
+            Console.WriteLine("Key in the ID# of the room and press ENTER.");
+            foreach (Room room in rooms)
+            {
+                Console.WriteLine($"{room.Room_ID}. {room.Number}");
+            }
+            return Convert.ToInt32(userResponse);
+        }
+        public string SetAnimalShotStatus()
+        {
+            Console.WriteLine("Key in number of status and press ENTER.\n1. Shots given.\n2. Shots needed.\n3. Shots not required");
+            userResponse = Console.ReadLine();
+            switch (userResponse)
+            {
+                case "1":
+                    userResponse = "yes";
+                    break;
+                case "2":
+                    userResponse = "no";
+                    break;
+                case "3":
+                    userResponse = "not required";
+                    break;
+                default:
+                    Console.WriteLine("Please select one of the three options. Press ENTER to continue");
+                    Console.ReadLine();
+                    SetAnimalShotStatus();
+                    break;
+            }
+            return userResponse;
+        }
         public DateTime PromptForDOB()
         {
             Console.WriteLine("Key in DOB as YYYY/MM/DD");
@@ -71,7 +165,7 @@ namespace HumaneSocietyConsole
         }     
         public int PromptForGender()
         {
-            Console.WriteLine("Key in the number for your gender and press ENTER\n1. Male\n2. Female\n3. Other");
+            Console.WriteLine("Key in the gender number and press ENTER\n1. Male\n2. Female\n3. Gender not listed");
             userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
         }
