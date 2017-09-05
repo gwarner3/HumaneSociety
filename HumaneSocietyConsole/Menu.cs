@@ -11,6 +11,28 @@ namespace HumaneSocietyConsole
     {
         private string userResponse;
 
+        public int SearchByCaegory(Table<AnimalType> types)
+        {
+            Console.WriteLine("Key in category ID of animal to search");
+            foreach (AnimalType type in types)
+            {
+                Console.WriteLine($"{type.AnimalType_ID} {type.TypeName}");
+            }
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
+        public decimal PromptForMaxPrice()
+        {
+            Console.WriteLine("Key in the max price and press ENTER");
+            userResponse = Console.ReadLine();
+            return Convert.ToDecimal(userResponse);
+        }
+        public decimal PromptForMinPrice()
+        {
+            Console.WriteLine("Key in the minimum price and press ENTER");
+            userResponse = Console.ReadLine();
+            return Convert.ToDecimal(userResponse);
+        }
         public decimal GetPayment(Table<Animal> animals)
         {
             Console.WriteLine("Key in amount of payment and press ENTER");
@@ -49,7 +71,6 @@ namespace HumaneSocietyConsole
         }
         public string EmplyeeOrAdopter()
         {
-            Console.Clear();
             Console.WriteLine("Enter as:\n1. Adopter\n2. Employee");
             userResponse = Console.ReadLine();
             return userResponse;

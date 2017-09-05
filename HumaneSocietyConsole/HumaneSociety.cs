@@ -116,8 +116,9 @@ namespace HumaneSocietyConsole
                         select a;
             foreach (Animal animal in animals)
             {
-                Console.WriteLine($"{animal.Name} is in {animal.Room.Number}");
+                Console.WriteLine($"{animal.Name} is in Room\t{animal.Room.Number}");
             }
+            Console.ReadLine();
         }
         public void RunAdopterFunctions()
         {
@@ -128,6 +129,7 @@ namespace HumaneSocietyConsole
                     CreateAdopterProfile();
                     break;
                 case "2":
+                    SearchAnimals();
                     break;
                 default:
                     Console.WriteLine("Wrong selection, try again. Press ENTER to continue");
@@ -135,6 +137,26 @@ namespace HumaneSocietyConsole
                     RunAdopterFunctions();
                     break;
             }
+        }
+        public void SearchAnimals()
+        {
+
+            int categoryToSearch = menu.SearchByCaegory(humaneSocietyData.AnimalTypes);
+            decimal maxPrice = menu.PromptForMaxPrice();
+            decimal minPrice = menu.PromptForMinPrice();
+            string hasShoots = menu.SetAnimalShotStatus();
+            var query = from a in humaneSocietyData.Animals
+                        where a.AnimalType_ID == categoryToSearch &&
+                        a.Price < maxPrice &&
+                        a.Price > minPrice &&
+                        a.HasShoots == hasShoots
+                        select a;
+            Console.WriteLine("The following animals meet your search criteria");
+            foreach (Animal a in query)
+            {
+                Console.WriteLine($"{a.Name}\t{a.AnimalType.TypeName}\t{a.Price}");
+            }
+            Console.ReadLine();
         }
         public void CreateAdopterProfile()
         {
@@ -178,9 +200,14 @@ namespace HumaneSocietyConsole
             {
                 RunAdopterFunctions();
             }
-            else
+            else if (userResponse == "2")
             {
                 RunEmployeeFunctions();
+            }
+            else
+            {
+                Console.WriteLine("Please select a valid option");
+                OpenHumaneSociety();
             }
 
         }
