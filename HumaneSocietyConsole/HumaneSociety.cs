@@ -54,8 +54,10 @@ namespace HumaneSocietyConsole
                 animalToAdd.AdoptionStatus = line[9];
                 humaneSocietyData.Animals.InsertOnSubmit(animalToAdd);
                 humaneSocietyData.SubmitChanges();
-            }            
+            }
+            Console.WriteLine("Press ENTER to continue");            
             Console.ReadLine();
+            OpenHumaneSociety();
         }
         public void RunEmployeeFunctions()
         {
