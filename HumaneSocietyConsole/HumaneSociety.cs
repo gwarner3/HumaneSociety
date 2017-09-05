@@ -240,6 +240,9 @@ namespace HumaneSocietyConsole
                 Console.WriteLine($"Something went wrong.\n{exception}\nPlease try again.");
                 CreateAdopterProfile();
             }
+            Console.WriteLine("Your profile has been created, press ENTER to continue.");
+            Console.ReadLine();
+            OpenHumaneSociety();
         }
         private void AddAnimalToDatabase()
         {

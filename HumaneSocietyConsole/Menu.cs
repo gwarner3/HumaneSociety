@@ -23,6 +23,7 @@ namespace HumaneSocietyConsole
 
         public string EmplyeeAdopterOrDeveloper()
         {
+            Console.Clear();
             Console.WriteLine("Enter as:\n1. Adopter\n2. Employee\n3. Developer Admin");
             userResponse = Console.ReadLine();
             return userResponse;
