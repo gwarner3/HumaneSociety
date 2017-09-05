@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
@@ -11,13 +12,17 @@ namespace HumaneSocietyConsole
     {
         private string userResponse;
         private HumaneSocietyDataContext humaneSocietyData = new HumaneSocietyDataContext();
+        Func<IQueryable,int> getPrimaryKey;
+        delegate int GetPrimaryKeyFunction(Table<Adopter> adopter);
+        private Adopter addedAdopter;
 
         Menu menu;
         public HumaneSociety(Menu menu)
         {
             this.menu = menu;
+            this.addedAdopter = new Adopter();
         }
-        public void RunDeveloperAdminFunctions()
+        private void RunDeveloperAdminFunctions()
         {
             userResponse = menu.DisplayDeveloperAdminMenu();
             switch (userResponse)
@@ -33,7 +38,7 @@ namespace HumaneSocietyConsole
             }
 
         }
-        public void ImportFile()
+        private void ImportFile()
         {
             
             List<string> somelist = new List<string>();
@@ -59,7 +64,7 @@ namespace HumaneSocietyConsole
             Console.ReadLine();
             OpenHumaneSociety();
         }
-        public void RunEmployeeFunctions()
+        private void RunEmployeeFunctions()
         {
             userResponse = menu.DisplayEmployeeMenu();
             switch (userResponse)
@@ -92,7 +97,7 @@ namespace HumaneSocietyConsole
                     break;
             }
         }
-        public void UpdateAnimalShotStatus()
+        private void UpdateAnimalShotStatus()
         {
             Animal animalSelected = new Animal();
             int animalSelectedID = menu.ShowShotStatus(humaneSocietyData.Animals);
@@ -105,7 +110,7 @@ namespace HumaneSocietyConsole
             }
             humaneSocietyData.SubmitChanges();
         }
-        public void SetAdoptionStatus()
+        private void SetAdoptionStatus()
         {
             var animals = from a in humaneSocietyData.Animals
                           select a;
@@ -123,18 +128,24 @@ namespace HumaneSocietyConsole
             Console.WriteLine($"{animalToUpdate.Name} adoption status is now - {animalToUpdate.AdoptionStatus}");
             Console.ReadLine();
         }
-        public void GetPayment()
+        private void GetPayment()
         {
+            //func testing
+            getPrimaryKey = menu.SelectAnimal;
+            //delegate testing
+            GetPrimaryKeyFunction getPrimaryKeyDelegate;
+            getPrimaryKeyDelegate = menu.SelectAdopter;
             Payment adopterPayment = new Payment();
             adopterPayment.PaymentDate = DateTime.Today;
-            adopterPayment.Animal_ID = menu.SelectAnimal(humaneSocietyData.Animals);
-            adopterPayment.Adopter_ID = menu.SelectAdopter(humaneSocietyData.Adopters);
+            //func testing
+            adopterPayment.Animal_ID = getPrimaryKey(humaneSocietyData.Animals);
+            adopterPayment.Adopter_ID = getPrimaryKeyDelegate(humaneSocietyData.Adopters);
             adopterPayment.PaymentAmount = menu.GetPayment(humaneSocietyData.Animals);
 
             humaneSocietyData.Payments.InsertOnSubmit(adopterPayment);
             humaneSocietyData.SubmitChanges();
         }
-        public void CalculateFoodNeeds()
+        private void CalculateFoodNeeds()
         {
             userResponse = menu.GetUserFoodNeed();
             var animals = from a in humaneSocietyData.Animals
@@ -143,7 +154,7 @@ namespace HumaneSocietyConsole
             newAnimal.ForEach((a) => { Console.WriteLine($"{a.Name} needs {a.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {a.Food.Name} for {userResponse} weeks."); });
             Console.ReadLine();
         }
-        public void ListAnimalCategories()
+        private void ListAnimalCategories()
         {
             var animals = from a in humaneSocietyData.Animals
                           select a;
@@ -153,7 +164,7 @@ namespace HumaneSocietyConsole
             }
             Console.Read();
         }
-        public void ListAnimalRoomNumnbers()
+        private void ListAnimalRoomNumnbers()
         {
             var animals = from a in humaneSocietyData.Animals
                         select a;
@@ -163,7 +174,7 @@ namespace HumaneSocietyConsole
             }
             Console.ReadLine();
         }
-        public void RunAdopterFunctions()
+        private void RunAdopterFunctions()
         {
             userResponse = menu.DisplayAdopterMenu();
             switch (userResponse)
@@ -181,7 +192,7 @@ namespace HumaneSocietyConsole
                     break;
             }
         }
-        public void SearchAnimals()
+        private void SearchAnimals()
         {
 
             int categoryToSearch = menu.SearchByCaegory(humaneSocietyData.AnimalTypes);
@@ -194,30 +205,43 @@ namespace HumaneSocietyConsole
                         a.Price > minPrice &&
                         a.HasShoots == hasShoots
                         select a;
-            Console.WriteLine("The following animals meet your search criteria");
-            foreach (Animal a in query)
+            if (query.Count() > 0)
             {
-                Console.WriteLine($"{a.Name}\t{a.AnimalType.TypeName}\t{a.Price}");
+                Console.WriteLine("The following animals meet your search criteria");
+                foreach (Animal a in query)
+                {
+                    Console.WriteLine($"{a.Name}\t{a.AnimalType.TypeName}\t{a.Price}");
+                }
+                Console.WriteLine("Press ENTER to continue");
+                OpenHumaneSociety();
             }
-            Console.ReadLine();
+            else
+            {
+                Console.WriteLine("There are no animals that meet your criteria,  please try again. Press ENTER to continue.");
+                Console.ReadLine();
+                OpenHumaneSociety();
+            }
         }
-        public void CreateAdopterProfile()
+        private void CreateAdopterProfile()
         {
-            Adopter addedAdopter = new Adopter();
-
             addedAdopter.FirstName = menu.PromptForFirstName();
             addedAdopter.LastName = menu.PromptForLastName();
             addedAdopter.DOB = menu.PromptForDOB();
             addedAdopter.AnnualIncome = menu.PromptForAnnualIncome();
             addedAdopter.Bio = menu.PromptForBio();
             addedAdopter.Gender_ID = menu.PromptForGender();
-
-            humaneSocietyData.Adopters.InsertOnSubmit(addedAdopter);
-            humaneSocietyData.SubmitChanges();
-
-            Console.ReadLine();
+            try
+            {
+                humaneSocietyData.Adopters.InsertOnSubmit(addedAdopter);
+                humaneSocietyData.SubmitChanges();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Something went wrong.\n{exception}\nPlease try again.");
+                CreateAdopterProfile();
+            }
         }
-        public void AddAnimalToDatabase()
+        private void AddAnimalToDatabase()
         {
             Animal addedAnimal = new Animal();
 
@@ -237,7 +261,7 @@ namespace HumaneSocietyConsole
         
         public void OpenHumaneSociety()
         {
-            userResponse = menu.EmplyeeOrAdopter();
+            userResponse = menu.EmplyeeAdopterOrDeveloper();
 
             if (userResponse == "1")
             {

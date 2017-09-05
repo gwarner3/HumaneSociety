@@ -10,7 +10,23 @@ namespace HumaneSocietyConsole
     public class Menu
     {
         private string userResponse;
+        public int PrimaryKeySelect(Table<Adopter> adopters)
+        {
+            Console.WriteLine("Key in the ID of the adopter and press ENTER");
+            foreach (Adopter adopter in adopters)
+            {
+                Console.WriteLine($"{adopter.Adopter_ID}. {adopter.FirstName} {adopter.LastName}");
+            }
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
 
+        public string EmplyeeAdopterOrDeveloper()
+        {
+            Console.WriteLine("Enter as:\n1. Adopter\n2. Employee\n3. Developer Admin");
+            userResponse = Console.ReadLine();
+            return userResponse;
+        }
         public int SearchByCaegory(Table<AnimalType> types)
         {
             Console.WriteLine("Key in category ID of animal to search");
@@ -59,7 +75,7 @@ namespace HumaneSocietyConsole
             userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
         }
-        public int SelectAnimal(Table<Animal> animals)
+        public int SelectAnimal(IQueryable animals)
         {
             Console.WriteLine("Key in ID of the animal and press ENTER\nAnimal ID\n");
             foreach (Animal animal in animals)
@@ -68,13 +84,7 @@ namespace HumaneSocietyConsole
             }
             userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
-        }
-        public string EmplyeeOrAdopter()
-        {
-            Console.WriteLine("Enter as:\n1. Adopter\n2. Employee\n3. Developer Admin");
-            userResponse = Console.ReadLine();
-            return userResponse;
-        }
+        }        
         public string GetUserFoodNeed()
         {
             Console.WriteLine("Key in the number of weeks you need to calculate food for and press ENTER.");
@@ -210,14 +220,32 @@ namespace HumaneSocietyConsole
         }
         public DateTime PromptForDOB()
         {
-            Console.WriteLine("Key in DOB as YYYY/MM/DD");
-            userResponse = Console.ReadLine();
+            Console.WriteLine("Key in DOB as YYYY/MM/DD");            
+            try
+            {
+                userResponse = Console.ReadLine();
+                Convert.ToDateTime(userResponse);
+            }
+            catch 
+            {
+                Console.WriteLine("\nSomething went wrong, please try again\n");
+                PromptForDOB();
+            }            
             return Convert.ToDateTime(userResponse);
         }
         public int PromptForAnnualIncome()
         {
-            Console.WriteLine("Key in your annual income and press ENTER");
-            userResponse = Console.ReadLine();
+            Console.WriteLine("Key in your annual income and press ENTER");            
+            try
+            {
+                userResponse = Console.ReadLine();
+                Convert.ToInt32(userResponse);
+            }
+            catch
+            {
+                Console.WriteLine("\nSomething went wrong, pleast try again\n");
+                PromptForAnnualIncome();
+            }
             return Convert.ToInt32(userResponse);
         }
         public string PromptForBio()
@@ -225,11 +253,21 @@ namespace HumaneSocietyConsole
             Console.WriteLine("Type up a short biography and press ENTER");
             string userResponse = Console.ReadLine();
             return userResponse;
+            
         }     
         public int PromptForGender()
         {
-            Console.WriteLine("Key in the gender number and press ENTER\n1. Male\n2. Female\n3. Gender not listed");
-            userResponse = Console.ReadLine();
+            Console.WriteLine("Key in the gender number and press ENTER\n1. Male\n2. Female\n3. Gender not listed");            
+            try
+            {
+                userResponse = Console.ReadLine();
+                Convert.ToInt32(userResponse);
+            }
+            catch
+            {
+                Console.WriteLine("\nSomething went wrong, please try again\n");
+                PromptForGender();
+            }
             return Convert.ToInt32(userResponse);
         }
         public string DisplayAdopterMenu()
