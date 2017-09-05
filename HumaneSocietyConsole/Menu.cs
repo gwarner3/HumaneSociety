@@ -11,6 +11,32 @@ namespace HumaneSocietyConsole
     {
         private string userResponse;
 
+        public decimal GetPayment(Table<Animal> animals)
+        {
+            Console.WriteLine("Key in amount of payment and press ENTER");
+            userResponse = Console.ReadLine();
+            return Convert.ToDecimal(userResponse);
+        }
+        public int SelectAdopter(Table<Adopter> adopters)
+        {
+            Console.WriteLine("Key in the ID of the adopter and press ENTER");
+            foreach (Adopter adopter in adopters)
+            {
+                Console.WriteLine($"{adopter.Adopter_ID}. {adopter.FirstName} {adopter.LastName}");
+            }
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
+        public int SelectAnimal(Table<Animal> animals)
+        {
+            Console.WriteLine("Key in ID of the animal this payment applies to and press ENTER\nAnimal ID\n");
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine($"{animal.Animal_ID}\t{animal.Name}\t\t{animal.AnimalType.TypeName}\t\t{animal.Price}");
+            }
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
         public string EmplyeeOrAdopter()
         {
             Console.Clear();

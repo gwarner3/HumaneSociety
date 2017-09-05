@@ -33,6 +33,9 @@ namespace HumaneSocietyConsole
                 case "4":
                     SetAdoptionStatus();
                     break;
+                case "5":
+                    GetPayment();
+                    break;
                 case "7":
                     CalculateFoodNeeds();
                         break;
@@ -60,6 +63,15 @@ namespace HumaneSocietyConsole
             humaneSocietyData.SubmitChanges();
             Console.WriteLine($"{animalToUpdate.Name} adoption status is now - {animalToUpdate.AdoptionStatus}");
             Console.ReadLine();
+        }
+        public void GetPayment()
+        {
+            int adopterID = menu.SelectAdopter(humaneSocietyData.Adopters);
+            int animaltoPayFor = menu.SelectAnimal(humaneSocietyData.Animals);
+            decimal paymentAmount = menu.GetPayment(humaneSocietyData.Animals);
+            //need to insert the id of the dopter 
+
+
         }
         public void CalculateFoodNeeds()
         {
