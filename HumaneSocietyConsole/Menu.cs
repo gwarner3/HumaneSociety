@@ -27,12 +27,22 @@ namespace HumaneSocietyConsole
             userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
         }
-        public int SelectAnimal(Table<Animal> animals)
+        public int ShowShotStatus(Table<Animal> animals)
         {
-            Console.WriteLine("Key in ID of the animal this payment applies to and press ENTER\nAnimal ID\n");
+            Console.WriteLine("Key in ID of the animal and press ENTER\nAnimal ID\tShot Satus\n");
             foreach (Animal animal in animals)
             {
-                Console.WriteLine($"{animal.Animal_ID}\t{animal.Name}\t\t{animal.AnimalType.TypeName}\t\t{animal.Price}");
+                Console.WriteLine($"{animal.Animal_ID}\t{animal.HasShoots}\t{animal.Name}\t{animal.AnimalType.TypeName}");
+            }
+            userResponse = Console.ReadLine();
+            return Convert.ToInt32(userResponse);
+        }
+        public int SelectAnimal(Table<Animal> animals)
+        {
+            Console.WriteLine("Key in ID of the animal and press ENTER\nAnimal ID\n");
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine($"{animal.Animal_ID}\t{animal.Name}\t{animal.AnimalType.TypeName}\t\t{animal.Price}");
             }
             userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
@@ -52,7 +62,7 @@ namespace HumaneSocietyConsole
         }
         public string DisplayEmployeeMenu()
         {
-            Console.WriteLine("1. Display animals by category\n2. Add animal to database\n3. List animal room numbers\n4. Set animal adoption status\n5. Get payment\n6. List animal shot status\n7. Calculate food serving needs");
+            Console.WriteLine("1. Display animals by category\n2. Add animal to database\n3. List animal room numbers\n4. Set animal adoption status\n5. Collect payment\n6. Update animal shot status\n7. Calculate food serving needs");
             userResponse = Console.ReadLine();
             return userResponse;            
         }

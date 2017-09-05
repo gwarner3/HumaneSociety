@@ -36,6 +36,9 @@ namespace HumaneSocietyConsole
                 case "5":
                     GetPayment();
                     break;
+                case "6":
+                    UpdateAnimalShotStatus();
+                    break;
                 case "7":
                     CalculateFoodNeeds();
                         break;
@@ -45,6 +48,19 @@ namespace HumaneSocietyConsole
                     RunEmployeeFunctions();
                     break;
             }
+        }
+        public void UpdateAnimalShotStatus()
+        {
+            Animal animalSelected = new Animal();            
+            int animalSelectedID = menu.ShowShotStatus(humaneSocietyData.Animals);
+            var findAnimal = from animals in humaneSocietyData.Animals
+                        where animals.Animal_ID == animalSelectedID
+                        select animals;
+            foreach (Animal animal in findAnimal)
+            {
+                animal.HasShoots = menu.SetAnimalShotStatus();
+            }
+            humaneSocietyData.SubmitChanges();
         }
         public void SetAdoptionStatus()
         {
@@ -66,12 +82,14 @@ namespace HumaneSocietyConsole
         }
         public void GetPayment()
         {
-            int adopterID = menu.SelectAdopter(humaneSocietyData.Adopters);
-            int animaltoPayFor = menu.SelectAnimal(humaneSocietyData.Animals);
-            decimal paymentAmount = menu.GetPayment(humaneSocietyData.Animals);
-            //need to insert the id of the dopter 
+            Payment adopterPayment = new Payment();
+            adopterPayment.PaymentDate = DateTime.Today;
+            adopterPayment.Animal_ID = menu.SelectAnimal(humaneSocietyData.Animals);
+            adopterPayment.Adopter_ID = menu.SelectAdopter(humaneSocietyData.Adopters);
+            adopterPayment.PaymentAmount = menu.GetPayment(humaneSocietyData.Animals);
 
-
+            humaneSocietyData.Payments.InsertOnSubmit(adopterPayment);
+            humaneSocietyData.SubmitChanges();
         }
         public void CalculateFoodNeeds()
         {
