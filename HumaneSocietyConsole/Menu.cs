@@ -89,7 +89,7 @@ namespace HumaneSocietyConsole
         }
         public int SelectAnimal(IQueryable animals)
         {
-            Console.WriteLine("Key in ID of the animal referenced and press ENTER\nAnimal ID\n");
+            Console.WriteLine("Key in ID of the animal referenced and press ENTER\n");
             foreach (Animal animal in animals)
             {
                 Console.WriteLine($"ID: {animal.Animal_ID}\t{animal.Name}\nType: {animal.AnimalType.TypeName}\tPrice: {animal.Price}\n");
@@ -104,6 +104,7 @@ namespace HumaneSocietyConsole
                 Console.ReadLine();
                 SelectAnimal(animals);
             }
+            
             return Convert.ToInt32(userResponse);
         }        
         public string GetUserFoodNeed()

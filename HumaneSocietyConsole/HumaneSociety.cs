@@ -166,7 +166,10 @@ namespace HumaneSocietyConsole
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Something went wrong\n");
+                Console.WriteLine($"Something went wrong\n{e.Message}\nPress Enter to continue.");
+                Console.ReadLine();
+                Console.Clear();
+                GetPayment();
             }            
 
             ReturnToMainMenu();
