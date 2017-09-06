@@ -109,6 +109,7 @@ namespace HumaneSocietyConsole
                 animal.HasShoots = menu.SetAnimalShotStatus();
             }
             humaneSocietyData.SubmitChanges();
+            menu.ReturnToMainMenu();
         }
         private void SetAdoptionStatus()
         {
@@ -125,8 +126,8 @@ namespace HumaneSocietyConsole
                 animalToUpdate.AdoptionStatus = "adopted";
             }
             humaneSocietyData.SubmitChanges();
-            Console.WriteLine($"{animalToUpdate.Name} adoption status is now - {animalToUpdate.AdoptionStatus}");
-            Console.ReadLine();
+            Console.WriteLine($"{animalToUpdate.Name} adoption status is now - {animalToUpdate.AdoptionStatus}.");
+            menu.ReturnToMainMenu();
         }
         private void GetPayment()
         {
@@ -144,6 +145,8 @@ namespace HumaneSocietyConsole
 
             humaneSocietyData.Payments.InsertOnSubmit(adopterPayment);
             humaneSocietyData.SubmitChanges();
+
+            menu.ReturnToMainMenu();
         }
         private void CalculateFoodNeeds()
         {
@@ -151,28 +154,30 @@ namespace HumaneSocietyConsole
             var animals = from a in humaneSocietyData.Animals
                           select a;
             var newAnimal = animals.ToList();
-            newAnimal.ForEach((a) => { Console.WriteLine($"{a.Name} needs {a.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {a.Food.Name} for {userResponse} weeks."); });
-            Console.ReadLine();
+            newAnimal.ForEach((a) => { Console.WriteLine($"{a.Name} needs {a.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {a.Food.Name} for {userResponse} weeks.\nPress ENTER to continue."); });
+
+            menu.ReturnToMainMenu();
         }
         private void ListAnimalCategories()
         {
             var animals = from a in humaneSocietyData.Animals
                           select a;
-            foreach (Animal animal in animals)
+            foreach (Animal animal in animals.OrderBy(a => a.AnimalType_ID))
             {
                 Console.WriteLine($"{animal.Name} is a {animal.AnimalType.TypeName}");
             }
-            Console.Read();
+
+            menu.ReturnToMainMenu();
         }
         private void ListAnimalRoomNumnbers()
         {
             var animals = from a in humaneSocietyData.Animals
-                        select a;
-            foreach (Animal animal in animals)
+                          select a;
+            foreach (Animal animal in animals.OrderBy(a => a.AnimalType_ID))
             {
-                Console.WriteLine($"{animal.Name} is in Room\t{animal.Room.Number}");
+                Console.WriteLine($"Room# {animal.Room.Number} is occupied by {animal.AnimalType.TypeName} - {animal.Name}");
             }
-            Console.ReadLine();
+            menu.ReturnToMainMenu();
         }
         private void RunAdopterFunctions()
         {
@@ -212,8 +217,8 @@ namespace HumaneSocietyConsole
                 {
                     Console.WriteLine($"{a.Name}\t{a.AnimalType.TypeName}\t{a.Price}");
                 }
-                Console.WriteLine("Press ENTER to continue");
-                OpenHumaneSociety();
+
+                menu.ReturnToMainMenu();
             }
             else
             {
@@ -264,7 +269,7 @@ namespace HumaneSocietyConsole
         
         public void OpenHumaneSociety()
         {
-            userResponse = menu.EmplyeeAdopterOrDeveloper();
+            userResponse = menu.EmployeeAdopterOrDeveloper();
 
             if (userResponse == "1")
             {

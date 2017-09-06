@@ -21,7 +21,7 @@ namespace HumaneSocietyConsole
             return Convert.ToInt32(userResponse);
         }
 
-        public string EmplyeeAdopterOrDeveloper()
+        public string EmployeeAdopterOrDeveloper()
         {
             Console.Clear();
             Console.WriteLine("Enter as:\n1. Adopter\n2. Employee\n3. Developer Admin");
@@ -113,6 +113,12 @@ namespace HumaneSocietyConsole
             }
             userResponse = Console.ReadLine();
             return userResponse;
+        }
+        public void ReturnToMainMenu()
+        {
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.Read();
+            EmployeeAdopterOrDeveloper();
         }
         public string PromptForAnimalName()
         {
