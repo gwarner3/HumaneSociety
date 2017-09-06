@@ -113,13 +113,7 @@ namespace HumaneSocietyConsole
             }
             userResponse = Console.ReadLine();
             return userResponse;
-        }
-        public void ReturnToMainMenu()
-        {
-            Console.WriteLine("\nPress ENTER to continue");
-            Console.Read();
-            EmployeeAdopterOrDeveloper();
-        }
+        }        
         public string PromptForAnimalName()
         {
             Console.WriteLine("Key in animals name and press ENTER");

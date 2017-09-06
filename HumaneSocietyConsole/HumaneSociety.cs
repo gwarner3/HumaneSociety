@@ -22,6 +22,12 @@ namespace HumaneSocietyConsole
             this.menu = menu;
             this.addedAdopter = new Adopter();
         }
+        public void ReturnToMainMenu()
+        {
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.Read();
+            OpenHumaneSociety();
+        }
         private void RunDeveloperAdminFunctions()
         {
             userResponse = menu.DisplayDeveloperAdminMenu();
@@ -109,7 +115,7 @@ namespace HumaneSocietyConsole
                 animal.HasShoots = menu.SetAnimalShotStatus();
             }
             humaneSocietyData.SubmitChanges();
-            menu.ReturnToMainMenu();
+            ReturnToMainMenu();
         }
         private void SetAdoptionStatus()
         {
@@ -127,7 +133,7 @@ namespace HumaneSocietyConsole
             }
             humaneSocietyData.SubmitChanges();
             Console.WriteLine($"{animalToUpdate.Name} adoption status is now - {animalToUpdate.AdoptionStatus}.");
-            menu.ReturnToMainMenu();
+            ReturnToMainMenu();
         }
         private void GetPayment()
         {
@@ -146,7 +152,7 @@ namespace HumaneSocietyConsole
             humaneSocietyData.Payments.InsertOnSubmit(adopterPayment);
             humaneSocietyData.SubmitChanges();
 
-            menu.ReturnToMainMenu();
+            ReturnToMainMenu();
         }
         private void CalculateFoodNeeds()
         {
@@ -156,7 +162,7 @@ namespace HumaneSocietyConsole
             var newAnimal = animals.ToList();
             newAnimal.ForEach((a) => { Console.WriteLine($"{a.Name} needs {a.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {a.Food.Name} for {userResponse} weeks.\nPress ENTER to continue."); });
 
-            menu.ReturnToMainMenu();
+            ReturnToMainMenu();
         }
         private void ListAnimalCategories()
         {
@@ -167,7 +173,7 @@ namespace HumaneSocietyConsole
                 Console.WriteLine($"{animal.Name} is a {animal.AnimalType.TypeName}");
             }
 
-            menu.ReturnToMainMenu();
+            ReturnToMainMenu();
         }
         private void ListAnimalRoomNumnbers()
         {
@@ -177,7 +183,7 @@ namespace HumaneSocietyConsole
             {
                 Console.WriteLine($"Room# {animal.Room.Number} is occupied by {animal.AnimalType.TypeName} - {animal.Name}");
             }
-            menu.ReturnToMainMenu();
+            ReturnToMainMenu();
         }
         private void RunAdopterFunctions()
         {
@@ -199,7 +205,6 @@ namespace HumaneSocietyConsole
         }
         private void SearchAnimals()
         {
-
             int categoryToSearch = menu.SearchByCaegory(humaneSocietyData.AnimalTypes);
             decimal maxPrice = menu.PromptForMaxPrice();
             decimal minPrice = menu.PromptForMinPrice();
@@ -217,14 +222,12 @@ namespace HumaneSocietyConsole
                 {
                     Console.WriteLine($"{a.Name}\t{a.AnimalType.TypeName}\t{a.Price}");
                 }
-
-                menu.ReturnToMainMenu();
+                ReturnToMainMenu();
             }
             else
             {
-                Console.WriteLine("There are no animals that meet your criteria,  please try again. Press ENTER to continue.");
-                Console.ReadLine();
-                OpenHumaneSociety();
+                Console.WriteLine("There are no animals that meet your criteria,  please try again.");
+                ReturnToMainMenu();
             }
         }
         private void CreateAdopterProfile()
@@ -245,9 +248,9 @@ namespace HumaneSocietyConsole
                 Console.WriteLine($"Something went wrong.\n{exception}\nPlease try again.");
                 CreateAdopterProfile();
             }
-            Console.WriteLine("Your profile has been created, press ENTER to continue.");
-            Console.ReadLine();
-            OpenHumaneSociety();
+            Console.WriteLine("Your profile has been created.");
+
+            ReturnToMainMenu();
         }
         private void AddAnimalToDatabase()
         {
@@ -265,6 +268,8 @@ namespace HumaneSocietyConsole
 
             humaneSocietyData.Animals.InsertOnSubmit(addedAnimal);
             humaneSocietyData.SubmitChanges();
+
+            ReturnToMainMenu();
         }
         
         public void OpenHumaneSociety()
@@ -288,7 +293,7 @@ namespace HumaneSocietyConsole
                 Console.WriteLine("Please select a valid option");
                 OpenHumaneSociety();
             }
-
         }
+        
     }
 }

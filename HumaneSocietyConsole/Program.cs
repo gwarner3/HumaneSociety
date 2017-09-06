@@ -10,9 +10,9 @@ namespace HumaneSocietyConsole
     {
         static void Main(string[] args)
         {
-            Menu menu = new Menu();
-            HumaneSociety humaneSociety = new HumaneSociety(menu);
-            humaneSociety.OpenHumaneSociety();
+            //Menu menu = new Menu();
+            //HumaneSociety humaneSociety = new HumaneSociety(menu);
+            //humaneSociety.OpenHumaneSociety();
         }
     }
 }
