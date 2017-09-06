@@ -68,22 +68,42 @@ namespace HumaneSocietyConsole
         }
         public int ShowShotStatus(Table<Animal> animals)
         {
-            Console.WriteLine("Key in ID of the animal and press ENTER\nAnimal ID\tShot Satus\n");
+            Console.WriteLine("Key in ID of the animal and press ENTER");
             foreach (Animal animal in animals)
             {
-                Console.WriteLine($"{animal.Animal_ID}\t{animal.HasShoots}\t{animal.Name}\t{animal.AnimalType.TypeName}");
+                Console.WriteLine($"ID: {animal.Animal_ID}\t{animal.AnimalType.TypeName}\tName: {animal.Name}\nShots given: {animal.HasShoots}\n");
+            }            
+            try
+            {
+                userResponse = Console.ReadLine();
+                return Convert.ToInt32(userResponse);
             }
-            userResponse = Console.ReadLine();
+            catch
+            {
+                Console.WriteLine("\nSomething went wrong, please try again. Press ENTER to continue\n");
+                Console.ReadLine();
+                ShowShotStatus(animals);
+            }
             return Convert.ToInt32(userResponse);
+
         }
         public int SelectAnimal(IQueryable animals)
         {
-            Console.WriteLine("Key in ID of the animal and press ENTER\nAnimal ID\n");
+            Console.WriteLine("Key in ID of the animal referenced and press ENTER\nAnimal ID\n");
             foreach (Animal animal in animals)
             {
-                Console.WriteLine($"{animal.Animal_ID}\t{animal.Name}\t{animal.AnimalType.TypeName}\t\t{animal.Price}");
+                Console.WriteLine($"ID: {animal.Animal_ID}\t{animal.Name}\nType: {animal.AnimalType.TypeName}\tPrice: {animal.Price}\n");
             }
-            userResponse = Console.ReadLine();
+            try
+            {
+                userResponse = Console.ReadLine();
+                return Convert.ToInt32(userResponse);            }
+            catch
+            {
+                Console.WriteLine("Something went wrong, try agiain. Press ENTER to continue");
+                Console.ReadLine();
+                SelectAnimal(animals);
+            }
             return Convert.ToInt32(userResponse);
         }        
         public string GetUserFoodNeed()
@@ -166,13 +186,6 @@ namespace HumaneSocietyConsole
                 Console.WriteLine($"{type.AnimalType_ID}. {type.TypeName}");
             }
             userResponse = Console.ReadLine();
-            //validate user input
-            //int test = Convert.ToInt32(userResponse);
-            //if (animalTypes.Any(type => type.AnimalType_ID != test))
-            //{
-            //    Console.WriteLine("Please key in a valid ID form the list");
-            //    SetAnimalType(animalTypes);
-            //}
             return Convert.ToInt32(userResponse);
 
         }
@@ -183,7 +196,6 @@ namespace HumaneSocietyConsole
             {
                 Console.WriteLine($"{food.Food_ID}. {food.Name}");
             }
-            //input validation here
             userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
         }
@@ -194,6 +206,7 @@ namespace HumaneSocietyConsole
             {
                 Console.WriteLine($"{room.Room_ID}. {room.Number}");
             }
+            userResponse = Console.ReadLine();
             return Convert.ToInt32(userResponse);
         }
         public string SetAnimalShotStatus()

@@ -110,12 +110,21 @@ namespace HumaneSocietyConsole
             var findAnimal = from animals in humaneSocietyData.Animals
                         where animals.Animal_ID == animalSelectedID
                         select animals;
-            foreach (Animal animal in findAnimal)
+            if (findAnimal.Count() > 0)
             {
-                animal.HasShoots = menu.SetAnimalShotStatus();
+                foreach (Animal animal in findAnimal)
+                {
+                    animal.HasShoots = menu.SetAnimalShotStatus();
+                }
+                humaneSocietyData.SubmitChanges();
+                ReturnToMainMenu();
             }
-            humaneSocietyData.SubmitChanges();
-            ReturnToMainMenu();
+            else
+            {
+                Console.WriteLine("\nYou have keyed in an invalid ID, please try again.");
+                UpdateAnimalShotStatus();
+            }
+            
         }
         private void SetAdoptionStatus()
         {
@@ -142,15 +151,23 @@ namespace HumaneSocietyConsole
             //delegate testing
             GetPrimaryKeyFunction getPrimaryKeyDelegate;
             getPrimaryKeyDelegate = menu.SelectAdopter;
+
             Payment adopterPayment = new Payment();
+
             adopterPayment.PaymentDate = DateTime.Today;
-            //func testing
-            adopterPayment.Animal_ID = getPrimaryKey(humaneSocietyData.Animals);
+            adopterPayment.Animal_ID = getPrimaryKey(humaneSocietyData.Animals.OrderBy(x => x.AnimalType_ID));
             adopterPayment.Adopter_ID = getPrimaryKeyDelegate(humaneSocietyData.Adopters);
             adopterPayment.PaymentAmount = menu.GetPayment(humaneSocietyData.Animals);
 
-            humaneSocietyData.Payments.InsertOnSubmit(adopterPayment);
-            humaneSocietyData.SubmitChanges();
+            try
+            {
+                humaneSocietyData.Payments.InsertOnSubmit(adopterPayment);
+                humaneSocietyData.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Something went wrong\n");
+            }            
 
             ReturnToMainMenu();
         }
@@ -159,9 +176,10 @@ namespace HumaneSocietyConsole
             userResponse = menu.GetUserFoodNeed();
             var animals = from a in humaneSocietyData.Animals
                           select a;
-            var newAnimal = animals.ToList();
-            newAnimal.ForEach((a) => { Console.WriteLine($"{a.Name} needs {a.Food.WeeklyServing * Convert.ToInt32(userResponse)} servings of {a.Food.Name} for {userResponse} weeks.\nPress ENTER to continue."); });
-
+            foreach (Animal animal in animals.OrderBy(a => a.AnimalType_ID))
+            {
+                Console.WriteLine($"Name: {animal.Name}\nServings needed for {userResponse} weeks: {animal.Food.WeeklyServing * Convert.ToInt32(userResponse)}\nFood: {animal.Food.Name}\n");
+            }
             ReturnToMainMenu();
         }
         private void ListAnimalCategories()
