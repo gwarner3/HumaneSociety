@@ -191,9 +191,8 @@ namespace HumaneSocietyConsole
                           select a;
             foreach (Animal animal in animals.OrderBy(a => a.AnimalType_ID))
             {
-                Console.WriteLine($"{animal.Name} is a {animal.AnimalType.TypeName}");
+                Console.WriteLine($"{animal.AnimalType.TypeName} - {animal.Name}");
             }
-
             ReturnToMainMenu();
         }
         private void ListAnimalRoomNumnbers()
